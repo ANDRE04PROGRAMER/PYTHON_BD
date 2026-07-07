@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ado_1\\source\\repos\\PYTHON_BD\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3C969EF9-A559-491C-AA63-FA7FB0D2BE43}|PYTHON_BD\\PYTHON_BD.pyproj|C:\\Users\\ado_1\\source\\repos\\PYTHON_BD\\PYTHON_BD\\PYTHON_BD.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{3C969EF9-A559-491C-AA63-FA7FB0D2BE43}|PYTHON_BD\\PYTHON_BD.pyproj|solutionrelative:PYTHON_BD\\PYTHON_BD.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PYTHON_BD.py",
+              "DocumentMoniker": "C:\\Users\\ado_1\\source\\repos\\PYTHON_BD\\PYTHON_BD\\PYTHON_BD.py",
+              "RelativeDocumentMoniker": "PYTHON_BD\\PYTHON_BD.py",
+              "ToolTip": "C:\\Users\\ado_1\\source\\repos\\PYTHON_BD\\PYTHON_BD\\PYTHON_BD.py",
+              "RelativeToolTip": "PYTHON_BD\\PYTHON_BD.py",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2026-07-07T13:00:47.255Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
