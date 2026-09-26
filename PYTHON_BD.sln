@@ -23,6 +23,7 @@ Global
 EndGlobal
 
 
+caso 1:---------
 
 def main():
     print("--- Sistema Experto para Mantenimiento de Máquina ---")
@@ -97,3 +98,87 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+caso 2: ----------
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+
+def main():
+    print("--- Análisis de Ventas con Pandas, NumPy y Matplotlib ---")
+
+    # 1. Crear el dataset y guardarlo como CSV (Paso previo de la actividad)
+    # Definimos los datos exactos de la tabla
+    datos = {
+        'Producto': ['Polo', 'Pantalón', 'Casaca', 'Camisa', 'Falda'],
+        'Ventas': [150, 120, 80, 200, 90],
+        'Precio': [35, 60, 120, 45, 50],
+        'Stock': [20, 15, 5, 30, 10]
+    }
+
+    # Crear el DataFrame
+    df_original = pd.DataFrame(datos)
+    nombre_archivo = 'ventas_textiles.csv'
+
+    # Guardar el dataset en un archivo CSV
+    df_original.to_csv(nombre_archivo, index=False)
+    print(f"\n[INFO] Dataset creado y guardado como '{nombre_archivo}'.")
+
+    # 1. Obtener los datos del Excel o CSV
+    # Ahora leemos el archivo CSV que acabamos de crear
+    df = pd.read_csv(nombre_archivo)
+
+    # 2. Cree el DataFrame (Ya se creó arriba, lo confirmamos)
+    print("\n[INFO] DataFrame cargado exitosamente.")
+
+    # 3. Muestre las primeras filas
+    print("\n--- Primeras filas del DataFrame ---")
+    print(df.head())
+
+    # 4. Calcule: promedio de ventas, promedio de precios, venta máxima, venta mínima
+    print("\n--- Estadísticas Calculadas ---")
+    promedio_ventas = df['Ventas'].mean()
+    promedio_precios = df['Precio'].mean()
+    venta_maxima = df['Ventas'].max()
+    venta_minima = df['Ventas'].min()
+
+    print(f"Promedio de ventas: {promedio_ventas:.2f}")
+    print(f"Promedio de precios: {promedio_precios:.2f}")
+    print(f"Venta máxima: {venta_maxima}")
+    print(f"Venta mínima: {venta_minima}")
+
+    # 5. Determine cuál es el producto con mayor cantidad de ventas
+    # Obtenemos el índice del valor máximo en la columna 'Ventas' y luego el nombre del producto
+    indice_max_ventas = df['Ventas'].idxmax()
+    producto_mas_vendido = df.loc[indice_max_ventas, 'Producto']
+    print(f"\nProducto con mayor cantidad de ventas: {producto_mas_vendido} ({venta_maxima} unidades)")
+
+    # 6. Genere un gráfico con matplotlib que muestre los datos
+    plt.figure(figsize=(10, 6))
+    
+    # Gráfico de barras para las ventas por producto
+    colores = ['#4CAF50', '#2196F3', '#FF9800', '#F44336', '#9C27B0']
+    plt.bar(df['Producto'], df['Ventas'], color=colores)
+    
+    # Configuración del gráfico
+    plt.title('Ventas Mensuales por Producto Textil', fontsize=14, fontweight='bold')
+    plt.xlabel('Producto', fontsize=12)
+    plt.ylabel('Cantidad de Ventas', fontsize=12)
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    
+    # Añadir etiquetas con los valores encima de cada barra
+    for i, valor in enumerate(df['Ventas']):
+        plt.text(i, valor + 2, str(valor), ha='center', fontweight='bold')
+
+    # Mostrar el gráfico
+    plt.tight_layout()
+    plt.show()
+
+if __name__ == "__main__":
+    main()
+
+
+caso 3: ----------
