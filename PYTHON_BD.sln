@@ -182,3 +182,55 @@ if __name__ == "__main__":
 
 
 caso 3: ----------
+
+from sklearn.tree import DecisionTreeClassifier
+
+def main():
+    print("--- PREDICCIÓN CON MACHINE LEARNING ---")
+
+    # 2. Crear la matriz X con las variables: horas de estudio y porcentaje de asistencia
+    # Datos históricos de los 8 estudiantes
+    X = [
+        [2, 60],  # Estudiante 1
+        [3, 65],  # Estudiante 2
+        [4, 70],  # Estudiante 3
+        [5, 75],  # Estudiante 4
+        [6, 80],  # Estudiante 5
+        [7, 85],  # Estudiante 6
+        [8, 90],  # Estudiante 7
+        [4, 85]   # Estudiante 8
+    ]
+
+    # 3. Crear el vector y con los resultados históricos
+    # 0 = Desaprobado, 1 = Aprobado
+    y = [0, 0, 0, 1, 1, 1, 1, 1]
+
+    # 4. Crear un modelo utilizando DecisionTreeClassifier
+    # Se añade random_state para que los resultados sean reproducibles
+    modelo = DecisionTreeClassifier(random_state=42)
+
+    # 6. Entrenar el modelo con los datos proporcionados
+    modelo.fit(X, y)
+
+    # 7. Considerar para su prueba un nuevo estudiante con las siguientes características:
+    # Horas de estudio/semana: 6, Asistencia (%): 82
+    nuevo_estudiante = [[6, 82]]
+
+    # 5 y 8. Utilizar el modelo entrenado para realizar la predicción (Sin usar if para la lógica)
+    prediccion = modelo.predict(nuevo_estudiante)
+    resultado_numerico = prediccion[0]
+
+    # 9. Mostrar mediante print() un mensaje indicando si el modelo predice: "Aprobado" o "Desaprobado"
+    # Nota: El uso de if aquí es solo para formatear el texto de salida, no para la lógica de predicción.
+    if resultado_numerico == 1:
+        resultado_texto = "Aprobado"
+    else:
+        resultado_texto = "Desaprobado"
+
+    # Mostrar la salida esperada
+    print(f"Horas de estudio: 6")
+    print(f"Asistencia: 82%")
+    print(f"El modelo predice: {resultado_texto} ({resultado_numerico})")
+
+if __name__ == "__main__":
+    main()
