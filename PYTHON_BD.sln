@@ -21,3 +21,79 @@ Global
 		SolutionGuid = {AFEF2B04-CDA1-4E87-B310-285D864D33AA}
 	EndGlobalSection
 EndGlobal
+
+
+
+def main():
+    print("--- Sistema Experto para Mantenimiento de Máquina ---")
+    
+    # 1. Solicitar la temperatura de la máquina
+    try:
+        temp_input = input("Temperatura: ")
+        temperatura = float(temp_input)
+    except ValueError:
+        print("Error: Por favor, ingrese un valor numérico válido para la temperatura.")
+        return
+
+    # 2. Solicitar el nivel de vibración
+    vibracion_input = input("Vibración: ")
+    # Normalizamos la entrada a minúsculas y quitamos espacios en blanco
+    vibracion = vibracion_input.strip().lower()
+
+    # Inicializamos variables para la decisión y la explicación
+    diagnostico = ""
+    explicacion = ""
+
+    # 3 & 4. Base de conocimiento y Motor de inferencia (if, elif, else)
+    
+    # Regla 1: Temperatura > 80 °C y vibración alta
+    if temperatura > 80 and vibracion == 'alta':
+        diagnostico = "MANTENIMIENTO INMEDIATO"
+        explicacion = (
+            "Temperatura > 80 °C\n"
+            "Vibración = alta\n"
+            "Regla aplicada: mantenimiento inmediato"
+        )
+        
+    # Regla 2: Temperatura > 80 °C y vibración normal
+    elif temperatura > 80 and vibracion == 'normal':
+        diagnostico = "REVISIÓN DE TEMPERATURA"
+        explicacion = (
+            "Temperatura > 80 °C\n"
+            "Vibración = normal\n"
+            "Regla aplicada: revisión de temperatura"
+        )
+        
+    # Regla 3: Temperatura entre 60 y 80 °C y vibración alta
+    elif 60 <= temperatura <= 80 and vibracion == 'alta':
+        diagnostico = "REVISIÓN DE VIBRACIÓN"
+        explicacion = (
+            "Temperatura entre 60 y 80 °C\n"
+            "Vibración = alta\n"
+            "Regla aplicada: revisión de vibración"
+        )
+        
+    # Regla 4: Temperatura <= 60 °C y vibración normal
+    elif temperatura <= 60 and vibracion == 'normal':
+        diagnostico = "FUNCIONAMIENTO NORMAL"
+        explicacion = (
+            "Temperatura <= 60 °C\n"
+            "Vibración = normal\n"
+            "Regla aplicada: funcionamiento normal"
+        )
+        
+    # Caso para combinaciones no definidas en la base de conocimiento
+    else:
+        diagnostico = "ESTADO NO DETERMINADO"
+        explicacion = (
+            "Las condiciones ingresadas no coinciden con ninguna regla "
+            "de la base de conocimiento actual."
+        )
+
+    # 5 & 6. Mostrar la decisión y la explicación
+    print(f"\nDiagnóstico: {diagnostico}")
+    print("Explicación:")
+    print(explicacion)
+
+if __name__ == "__main__":
+    main()
