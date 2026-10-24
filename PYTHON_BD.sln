@@ -67,9 +67,106 @@ Si la tienda decide invertir S/ 350 en publicidad este mes, puede esperar vender
 ---------------------------
 caso 2
 
+import numpy as np
+from sklearn.neighbors import KNeighborsClassifier
 
+# 1. Registrar los datos en Python
+# X: Característica (Compras mensuales). Debe ser una matriz 2D.
+X = np.array([[50], [70], [90], [300], [350], [400]])
+
+# y: Etiquetas (Categoría)
+y = np.array(['Bajo', 'Bajo', 'Bajo', 'Alto', 'Alto', 'Alto'])
+
+# 2. Entrenar un modelo KNN y 3. Configurar los tres vecinos más cercanos
+# Creamos el modelo indicando n_neighbors=3
+modelo_knn = KNeighborsClassifier(n_neighbors=3)
+
+# Entrenamos el modelo con los datos
+modelo_knn.fit(X, y)
+
+# 4. Predecir la categoría de un cliente que gasta S/ 320
+nuevo_cliente = np.array([[320]])
+prediccion = modelo_knn.predict(nuevo_cliente)
+
+# Mostrar el resultado
+print(f"El nuevo cliente que gasta S/ 320 pertenece a la categoría: {prediccion[0]}")
+
+Explicación de cómo KNN clasifica al nuevo cliente
+
+El algoritmo KNN (K-Nearest Neighbors o K-Vecinos más Cercanos) es un método de clasificación basado en instancias. Para clasificar al nuevo cliente con un gasto de S/ 320, el algoritmo hace lo siguiente:
+
+1. Calcula distancias: Mide la distancia (en este caso, la diferencia numérica) entre el nuevo dato (320) y todos los datos que ya conoce de la tabla.
+   · Distancia a 50 (Bajo) = 270
+   · Distancia a 70 (Bajo) = 250
+   · Distancia a 90 (Bajo) = 230
+   · Distancia a 300 (Alto) = 20
+   · Distancia a 350 (Alto) = 30
+   · Distancia a 400 (Alto) = 80
+2. Selecciona los K vecinos más cercanos: Como configuramos el modelo con K=3, el algoritmo selecciona los 3 clientes con la menor distancia al nuevo cliente. En este caso, los 3 más cercanos son:
+   · El cliente de 300 (Categoría Alto) a una distancia de 20.
+   · El cliente de 350 (Categoría Alto) a una distancia de 30.
+   · El cliente de 400 (Categoría Alto) a una distancia de 80.
+3. Vota (Mayoría): El algoritmo mira las categorías de esos 3 vecinos más cercanos.
+   · Vecino 1: Alto
+   · Vecino 2: Alto
+   · Vecino 3: Alto
+
+Como la mayoría de sus 3 vecinos más cercanos (de hecho, todos) son de categoría "Alto", el algoritmo asigna la categoría "Alto" al nuevo cliente. En resumen, el modelo asume que un cliente nuevo se parecerá a los clientes que ya conoce y que tienen hábitos de consumo similares.
 
 ---------------------------
 caso 3
 
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
 
+# 1. Crear el dataset en Python
+X = np.array([[1], [2], [3], [5], [6], [7], [8], [9]]) # Visitas
+y = np.array(['No', 'No', 'No', 'Sí', 'Sí', 'Sí', 'Sí', 'Sí']) # Compra
+
+# 2. Separar los datos en entrenamiento y prueba
+# Usamos un 75% para entrenar y 25% para probar. 
+# random_state asegura que la división sea la misma cada vez que ejecutes el código.
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+# 3. Entrenar un árbol de decisión y un modelo de regresión logística
+modelo_arbol = DecisionTreeClassifier(random_state=42)
+modelo_regresion = LogisticRegression(random_state=42)
+
+modelo_arbol.fit(X_train, y_train)
+modelo_regresion.fit(X_train, y_train)
+
+# 4. Obtener las predicciones para los datos de prueba
+pred_arbol = modelo_arbol.predict(X_test)
+pred_regresion = modelo_regresion.predict(X_test)
+
+# 5. Calcular el porcentaje de predicciones correctas (Exactitud / Accuracy)
+precision_arbol = accuracy_score(y_test, pred_arbol)
+precision_regresion = accuracy_score(y_test, pred_regresion)
+
+# Mostrar resultados
+print(f"Datos de prueba (Visitas): {X_test.flatten()}")
+print(f"Valores reales:            {y_test}")
+print("-" * 40)
+print(f"Predicciones Árbol:        {pred_arbol}")
+print(f"Predicciones Regresión:    {pred_regresion}")
+print("-" * 40)
+print(f"Precisión Árbol de Decisión: {precision_arbol * 100}%")
+print(f"Precisión Regresión Logística: {precision_regresion * 100}%")
+
+
+Comparación y Explicación (Actividad 6)
+
+¿Cuál obtuvo mayor porcentaje de aciertos?
+En este caso específico, ambos modelos empataron con un 100% de aciertos (o un empate en el número de errores si se diera un caso atípico por la división aleatoria, aunque es poco probable).
+
+¿Por qué sucede esto y cómo funcionan los modelos en este caso?
+
+1. Naturaleza de los datos: Los datos de este ejercicio son extremadamente simples y están perfectamente separados (linealmente separables). Hay un patrón clarísimo: si el cliente visita 1, 2 o 3 veces, no compra; si visita 5 veces o más, sí compra. No hay casos ambiguos (como un cliente que visite 4 veces).
+2. El Árbol de Decisión: Este modelo aprenderá rápidamente una regla simple. Básicamente creará un corte (un nodo) que diga: "Si Visitas <= 3, entonces 'No'; si Visitas > 3, entonces 'Sí'". Con una regla tan perfecta, clasificará correctamente cualquier dato nuevo que le pongamos.
+3. La Regresión Logística: Este modelo busca una "curva" matemática (función sigmoide) que separe las dos clases calculando probabilidades. Al estar los datos tan separados (del 3 al 5 hay un salto enorme), la curva se adaptará perfectamente en medio de esa brecha. Cualquier cliente con 1, 2 o 3 visitas tendrá una probabilidad muy baja de comprar, y con 5 o más, una probabilidad muy alta.
+
+Conclusión práctica:
+Con un dataset tan pequeño y "limpio", tanto un modelo basado en reglas (Árbol) como uno estadístico-lineal (Regresión) van a resolver el problema a la perfección. En un caso real, donde los datos son más ruidosos, desordenados y las fronteras no son tan claras, ahí es donde verías diferencias significativas: los árboles pueden captar relaciones más complejas, mientras que la regresión logística es más robusta contra el sobreajuste si la relación es simple.
