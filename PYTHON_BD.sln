@@ -23,214 +23,53 @@ Global
 EndGlobal
 
 
-caso 1:---------
+---------------------------
+caso 1
 
-def main():
-    print("--- Sistema Experto para Mantenimiento de Máquina ---")
-    
-    # 1. Solicitar la temperatura de la máquina
-    try:
-        temp_input = input("Temperatura: ")
-        temperatura = float(temp_input)
-    except ValueError:
-        print("Error: Por favor, ingrese un valor numérico válido para la temperatura.")
-        return
-
-    # 2. Solicitar el nivel de vibración
-    vibracion_input = input("Vibración: ")
-    # Normalizamos la entrada a minúsculas y quitamos espacios en blanco
-    vibracion = vibracion_input.strip().lower()
-
-    # Inicializamos variables para la decisión y la explicación
-    diagnostico = ""
-    explicacion = ""
-
-    # 3 & 4. Base de conocimiento y Motor de inferencia (if, elif, else)
-    
-    # Regla 1: Temperatura > 80 °C y vibración alta
-    if temperatura > 80 and vibracion == 'alta':
-        diagnostico = "MANTENIMIENTO INMEDIATO"
-        explicacion = (
-            "Temperatura > 80 °C\n"
-            "Vibración = alta\n"
-            "Regla aplicada: mantenimiento inmediato"
-        )
-        
-    # Regla 2: Temperatura > 80 °C y vibración normal
-    elif temperatura > 80 and vibracion == 'normal':
-        diagnostico = "REVISIÓN DE TEMPERATURA"
-        explicacion = (
-            "Temperatura > 80 °C\n"
-            "Vibración = normal\n"
-            "Regla aplicada: revisión de temperatura"
-        )
-        
-    # Regla 3: Temperatura entre 60 y 80 °C y vibración alta
-    elif 60 <= temperatura <= 80 and vibracion == 'alta':
-        diagnostico = "REVISIÓN DE VIBRACIÓN"
-        explicacion = (
-            "Temperatura entre 60 y 80 °C\n"
-            "Vibración = alta\n"
-            "Regla aplicada: revisión de vibración"
-        )
-        
-    # Regla 4: Temperatura <= 60 °C y vibración normal
-    elif temperatura <= 60 and vibracion == 'normal':
-        diagnostico = "FUNCIONAMIENTO NORMAL"
-        explicacion = (
-            "Temperatura <= 60 °C\n"
-            "Vibración = normal\n"
-            "Regla aplicada: funcionamiento normal"
-        )
-        
-    # Caso para combinaciones no definidas en la base de conocimiento
-    else:
-        diagnostico = "ESTADO NO DETERMINADO"
-        explicacion = (
-            "Las condiciones ingresadas no coinciden con ninguna regla "
-            "de la base de conocimiento actual."
-        )
-
-    # 5 & 6. Mostrar la decisión y la explicación
-    print(f"\nDiagnóstico: {diagnostico}")
-    print("Explicación:")
-    print(explicacion)
-
-if __name__ == "__main__":
-    main()
-
-
-caso 2: ----------
-
-import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import os
+from sklearn.linear_model import LinearRegression
 
-def main():
-    print("--- Análisis de Ventas con Pandas, NumPy y Matplotlib ---")
+# 1. Crear un programa con los datos proporcionados
+# X (Variable independiente): Publicidad. Debe ser una matriz 2D.
+X = np.array([[100], [200], [300], [400], [500], [600]])
 
-    # 1. Crear el dataset y guardarlo como CSV (Paso previo de la actividad)
-    # Definimos los datos exactos de la tabla
-    datos = {
-        'Producto': ['Polo', 'Pantalón', 'Casaca', 'Camisa', 'Falda'],
-        'Ventas': [150, 120, 80, 200, 90],
-        'Precio': [35, 60, 120, 45, 50],
-        'Stock': [20, 15, 5, 30, 10]
-    }
+# y (Variable dependiente): Productos vendidos.
+y = np.array([20, 35, 50, 65, 80, 95])
 
-    # Crear el DataFrame
-    df_original = pd.DataFrame(datos)
-    nombre_archivo = 'ventas_textiles.csv'
+# 2. Utilizar un modelo de regresión lineal
+modelo = LinearRegression()
 
-    # Guardar el dataset en un archivo CSV
-    df_original.to_csv(nombre_archivo, index=False)
-    print(f"\n[INFO] Dataset creado y guardado como '{nombre_archivo}'.")
+# 3. Entrenar el modelo utilizando los datos disponibles
+modelo.fit(X, y)
 
-    # 1. Obtener los datos del Excel o CSV
-    # Ahora leemos el archivo CSV que acabamos de crear
-    df = pd.read_csv(nombre_archivo)
+# 4. Predecir cuántos productos se venderían si se invierte S/ 350
+inversion_nueva = np.array([[350]])
+prediccion = modelo.predict(inversion_nueva)
 
-    # 2. Cree el DataFrame (Ya se creó arriba, lo confirmamos)
-    print("\n[INFO] DataFrame cargado exitosamente.")
-
-    # 3. Muestre las primeras filas
-    print("\n--- Primeras filas del DataFrame ---")
-    print(df.head())
-
-    # 4. Calcule: promedio de ventas, promedio de precios, venta máxima, venta mínima
-    print("\n--- Estadísticas Calculadas ---")
-    promedio_ventas = df['Ventas'].mean()
-    promedio_precios = df['Precio'].mean()
-    venta_maxima = df['Ventas'].max()
-    venta_minima = df['Ventas'].min()
-
-    print(f"Promedio de ventas: {promedio_ventas:.2f}")
-    print(f"Promedio de precios: {promedio_precios:.2f}")
-    print(f"Venta máxima: {venta_maxima}")
-    print(f"Venta mínima: {venta_minima}")
-
-    # 5. Determine cuál es el producto con mayor cantidad de ventas
-    # Obtenemos el índice del valor máximo en la columna 'Ventas' y luego el nombre del producto
-    indice_max_ventas = df['Ventas'].idxmax()
-    producto_mas_vendido = df.loc[indice_max_ventas, 'Producto']
-    print(f"\nProducto con mayor cantidad de ventas: {producto_mas_vendido} ({venta_maxima} unidades)")
-
-    # 6. Genere un gráfico con matplotlib que muestre los datos
-    plt.figure(figsize=(10, 6))
-    
-    # Gráfico de barras para las ventas por producto
-    colores = ['#4CAF50', '#2196F3', '#FF9800', '#F44336', '#9C27B0']
-    plt.bar(df['Producto'], df['Ventas'], color=colores)
-    
-    # Configuración del gráfico
-    plt.title('Ventas Mensuales por Producto Textil', fontsize=14, fontweight='bold')
-    plt.xlabel('Producto', fontsize=12)
-    plt.ylabel('Cantidad de Ventas', fontsize=12)
-    plt.grid(axis='y', linestyle='--', alpha=0.7)
-    
-    # Añadir etiquetas con los valores encima de cada barra
-    for i, valor in enumerate(df['Ventas']):
-        plt.text(i, valor + 2, str(valor), ha='center', fontweight='bold')
-
-    # Mostrar el gráfico
-    plt.tight_layout()
-    plt.show()
-
-if __name__ == "__main__":
-    main()
+# Mostrar el resultado
+print(f"Predicción de ventas para una inversión de S/ 350: {prediccion[0]} productos")
 
 
-caso 3: ----------
+¿Qué significa este resultado?
+El modelo de regresión lineal ha encontrado una relación matemática perfecta entre la inversión en publicidad y las ventas. Si observas los datos, por cada S/ 100 adicionales que invierte la tienda, las ventas aumentan exactamente en 15 productos.
 
-from sklearn.tree import DecisionTreeClassifier
+La ecuación de la línea que el modelo encontró es:
+Ventas = 0.15 * (Publicidad) + 5
 
-def main():
-    print("--- PREDICCIÓN CON MACHINE LEARNING ---")
+Por lo tanto, al reemplazar la publicidad con 350, obtenemos:
 
-    # 2. Crear la matriz X con las variables: horas de estudio y porcentaje de asistencia
-    # Datos históricos de los 8 estudiantes
-    X = [
-        [2, 60],  # Estudiante 1
-        [3, 65],  # Estudiante 2
-        [4, 70],  # Estudiante 3
-        [5, 75],  # Estudiante 4
-        [6, 80],  # Estudiante 5
-        [7, 85],  # Estudiante 6
-        [8, 90],  # Estudiante 7
-        [4, 85]   # Estudiante 8
-    ]
+· Ventas = 0.15 * 350 + 5 = 52.5 + 5 = 57.5
 
-    # 3. Crear el vector y con los resultados históricos
-    # 0 = Desaprobado, 1 = Aprobado
-    y = [0, 0, 0, 1, 1, 1, 1, 1]
+En términos de negocio:
+Si la tienda decide invertir S/ 350 en publicidad este mes, puede esperar vender alrededor de 57 o 58 productos. Este es un punto intermedio lógico entre los datos históricos: cuando invirtieron S/ 300 vendieron 50, y cuando invirtieron S/ 400 vendieron 65. Al invertir S/ 350 (justo a la mitad), lo lógico es esperar vender la mitad de la diferencia, es decir, 57.5.
 
-    # 4. Crear un modelo utilizando DecisionTreeClassifier
-    # Se añade random_state para que los resultados sean reproducibles
-    modelo = DecisionTreeClassifier(random_state=42)
 
-    # 6. Entrenar el modelo con los datos proporcionados
-    modelo.fit(X, y)
+---------------------------
+caso 2
 
-    # 7. Considerar para su prueba un nuevo estudiante con las siguientes características:
-    # Horas de estudio/semana: 6, Asistencia (%): 82
-    nuevo_estudiante = [[6, 82]]
 
-    # 5 y 8. Utilizar el modelo entrenado para realizar la predicción (Sin usar if para la lógica)
-    prediccion = modelo.predict(nuevo_estudiante)
-    resultado_numerico = prediccion[0]
 
-    # 9. Mostrar mediante print() un mensaje indicando si el modelo predice: "Aprobado" o "Desaprobado"
-    # Nota: El uso de if aquí es solo para formatear el texto de salida, no para la lógica de predicción.
-    if resultado_numerico == 1:
-        resultado_texto = "Aprobado"
-    else:
-        resultado_texto = "Desaprobado"
+---------------------------
+caso 3
 
-    # Mostrar la salida esperada
-    print(f"Horas de estudio: 6")
-    print(f"Asistencia: 82%")
-    print(f"El modelo predice: {resultado_texto} ({resultado_numerico})")
 
-if __name__ == "__main__":
-    main()
